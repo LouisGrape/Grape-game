@@ -9,13 +9,10 @@
 :root {
     --dark: #071b0b;
     --dark2: #102d14;
-    --panel: #16391b;
     --green: #63d63d;
     --light-green: #a5ff70;
     --muted: #a9c6a5;
     --gold: #ffd95a;
-    --white: #f5fff2;
-    --red: #ff6b6b;
 }
 
 * {
@@ -25,9 +22,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background:
-        radial-gradient(circle at top, #214d27, var(--dark) 60%);
-    color: var(--white);
+    background: radial-gradient(circle at top, #214d27, var(--dark) 65%);
+    color: white;
     min-height: 100vh;
 }
 
@@ -56,7 +52,7 @@ header p {
 }
 
 .panel {
-    background: rgba(16,45,20,.9);
+    background: rgba(16,45,20,.95);
     border: 1px solid rgba(165,255,112,.15);
     border-radius: 22px;
     padding: 20px;
@@ -72,25 +68,25 @@ header p {
 
 .stat {
     background: #0b2410;
-    padding: 15px;
+    padding: 14px;
     border-radius: 15px;
     text-align: center;
 }
 
 .stat-number {
     display: block;
-    font-size: 27px;
+    font-size: 26px;
     font-weight: bold;
     color: var(--light-green);
 }
 
 .stat-label {
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .tree-area {
-    min-height: 500px;
+    min-height: 550px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -120,8 +116,8 @@ header p {
 }
 
 .click-text {
-    margin-top: 10px;
     color: var(--muted);
+    margin-top: 5px;
 }
 
 .popup {
@@ -130,10 +126,15 @@ header p {
     animation: popup 900ms ease-out forwards;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
     font-weight: bold;
     font-size: 20px;
-    color: var(--light-green);
+    z-index: 20;
+}
+
+.popup.critical-popup {
+    color: var(--gold);
+    font-size: 26px;
 }
 
 @keyframes popup {
@@ -141,6 +142,7 @@ header p {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
+
     100% {
         opacity: 0;
         transform: translateY(-100px) scale(1.2);
@@ -183,7 +185,7 @@ header p {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-height: 600px;
+    max-height: 650px;
     overflow-y: auto;
     padding-right: 5px;
 }
@@ -235,7 +237,7 @@ header p {
     padding: 9px 12px;
     font-weight: bold;
     cursor: pointer;
-    min-width: 100px;
+    min-width: 105px;
 }
 
 .buy:hover {
@@ -301,21 +303,11 @@ header p {
     background: #5a2727;
 }
 
-.reset:hover {
-    background: #7a3030;
-}
-
 .notice {
     text-align: center;
     color: var(--muted);
     font-size: 13px;
     margin-top: 10px;
-}
-
-.critical {
-    color: var(--gold);
-    font-size: 26px;
-    font-weight: bold;
 }
 
 @media(max-width: 850px) {
@@ -325,10 +317,6 @@ header p {
 
     header h1 {
         font-size: 32px;
-    }
-
-    .tree-area {
-        min-height: 420px;
     }
 }
 </style>
@@ -343,156 +331,172 @@ header p {
 
 <div class="game">
 
-    <!-- LEFT SIDE -->
-    <section class="panel tree-area" id="treeArea">
+<!-- TREE -->
 
-        <div class="stats">
+<section class="panel tree-area" id="treeArea">
 
-            <div class="stat">
-                <span class="stat-number" id="grapeCount">0</span>
-                <span class="stat-label">Green Grapes</span>
-            </div>
+    <div class="stats">
 
-            <div class="stat">
-                <span class="stat-number" id="gps">0</span>
-                <span class="stat-label">Grapes / Second</span>
-            </div>
-
-            <div class="stat">
-                <span class="stat-number" id="clickPower">1</span>
-                <span class="stat-label">Grapes / Click</span>
-            </div>
-
-            <div class="stat">
-                <span class="stat-number" id="criticalChance">5%</span>
-                <span class="stat-label">Critical Chance</span>
-            </div>
-
+        <div class="stat">
+            <span class="stat-number" id="grapeCount">0</span>
+            <span class="stat-label">Green Grapes</span>
         </div>
 
-        <button class="tree-button" id="treeButton">
-
-            <svg class="tree-svg" viewBox="0 0 500 500">
-
-                <defs>
-
-                    <radialGradient id="leafGradient">
-                        <stop offset="0%" stop-color="#9cff72"/>
-                        <stop offset="100%" stop-color="#238b31"/>
-                    </radialGradient>
-
-                    <linearGradient id="trunkGradient"
-                        x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stop-color="#512b12"/>
-                        <stop offset="50%" stop-color="#8b5325"/>
-                        <stop offset="100%" stop-color="#43230e"/>
-                    </linearGradient>
-
-                    <radialGradient id="grapeGradient">
-                        <stop offset="0%" stop-color="#d9ff9d"/>
-                        <stop offset="40%" stop-color="#65db3d"/>
-                        <stop offset="100%" stop-color="#238b26"/>
-                    </radialGradient>
-
-                </defs>
-
-                <!-- shadow -->
-                <ellipse cx="250" cy="460" rx="150" ry="25"
-                    fill="rgba(0,0,0,.25)"/>
-
-                <!-- trunk -->
-                <path d="M220 450
-                         C225 390 220 330 205 275
-                         C190 220 210 170 250 145
-                         C290 170 310 220 295 275
-                         C280 330 275 390 280 450Z"
-                      fill="url(#trunkGradient)"/>
-
-                <!-- branches -->
-                <path d="M245 250 Q160 180 105 150"
-                      fill="none"
-                      stroke="#70401d"
-                      stroke-width="25"
-                      stroke-linecap="round"/>
-
-                <path d="M260 240 Q350 170 405 145"
-                      fill="none"
-                      stroke="#70401d"
-                      stroke-width="25"
-                      stroke-linecap="round"/>
-
-                <path d="M245 210 Q225 130 205 100"
-                      fill="none"
-                      stroke="#70401d"
-                      stroke-width="18"
-                      stroke-linecap="round"/>
-
-                <!-- leaves -->
-                <circle cx="110" cy="125" r="75" fill="url(#leafGradient)"/>
-                <circle cx="185" cy="90" r="90" fill="url(#leafGradient)"/>
-                <circle cx="275" cy="75" r="95" fill="url(#leafGradient)"/>
-                <circle cx="365" cy="105" r="85" fill="url(#leafGradient)"/>
-                <circle cx="405" cy="165" r="70" fill="url(#leafGradient)"/>
-                <circle cx="95" cy="185" r="65" fill="url(#leafGradient)"/>
-
-                <!-- grape clusters -->
-
-                <g fill="url(#grapeGradient)">
-
-                    <circle cx="125" cy="210" r="17"/>
-                    <circle cx="150" cy="220" r="17"/>
-                    <circle cx="175" cy="210" r="17"/>
-                    <circle cx="137" cy="240" r="17"/>
-                    <circle cx="162" cy="245" r="17"/>
-                    <circle cx="150" cy="270" r="17"/>
-
-                    <circle cx="350" cy="210" r="17"/>
-                    <circle cx="375" cy="220" r="17"/>
-                    <circle cx="400" cy="210" r="17"/>
-                    <circle cx="362" cy="240" r="17"/>
-                    <circle cx="387" cy="245" r="17"/>
-                    <circle cx="375" cy="270" r="17"/>
-
-                    <circle cx="240" cy="165" r="17"/>
-                    <circle cx="265" cy="165" r="17"/>
-                    <circle cx="252" cy="190" r="17"/>
-                    <circle cx="252" cy="215" r="17"/>
-
-                </g>
-
-                <!-- highlights -->
-                <g fill="#efffcf">
-
-                    <circle cx="119" cy="204" r="4"/>
-                    <circle cx="144" cy="214" r="4"/>
-                    <circle cx="344" cy="204" r="4"/>
-                    <circle cx="369" cy="214" r="4"/>
-                    <circle cx="234" cy="159" r="4"/>
-
-                </g>
-
-            </svg>
-
-        </button>
-
-        <div class="click-text">
-            Click the grape tree!
+        <div class="stat">
+            <span class="stat-number" id="gps">0</span>
+            <span class="stat-label">Grapes / Second</span>
         </div>
 
-    </section>
-
-
-    <!-- RIGHT SIDE -->
-    <section class="panel">
-
-        <div class="upgrades-title">
-            <h2>🛒 Upgrades</h2>
-            <span id="upgradeCount">0</span>
+        <div class="stat">
+            <span class="stat-number" id="clickPower">1</span>
+            <span class="stat-label">Grapes / Click</span>
         </div>
 
-        <div class="upgrade-list" id="upgradeList"></div>
+        <div class="stat">
+            <span class="stat-number" id="criticalChance">5%</span>
+            <span class="stat-label">Critical Chance</span>
+        </div>
 
-    </section>
+    </div>
+
+    <button class="tree-button" id="treeButton">
+
+        <svg class="tree-svg" viewBox="0 0 500 500">
+
+            <defs>
+
+                <radialGradient id="leafGradient">
+                    <stop offset="0%" stop-color="#9cff72"/>
+                    <stop offset="100%" stop-color="#238b31"/>
+                </radialGradient>
+
+                <linearGradient id="trunkGradient"
+                    x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#512b12"/>
+                    <stop offset="50%" stop-color="#8b5325"/>
+                    <stop offset="100%" stop-color="#43230e"/>
+                </linearGradient>
+
+                <radialGradient id="grapeGradient">
+                    <stop offset="0%" stop-color="#d9ff9d"/>
+                    <stop offset="40%" stop-color="#65db3d"/>
+                    <stop offset="100%" stop-color="#238b26"/>
+                </radialGradient>
+
+            </defs>
+
+            <ellipse cx="250" cy="460"
+                     rx="150" ry="25"
+                     fill="rgba(0,0,0,.25)"/>
+
+            <path d="M220 450
+                     C225 390 220 330 205 275
+                     C190 220 210 170 250 145
+                     C290 170 310 220 295 275
+                     C280 330 275 390 280 450Z"
+                  fill="url(#trunkGradient)"/>
+
+            <path d="M245 250 Q160 180 105 150"
+                  fill="none"
+                  stroke="#70401d"
+                  stroke-width="25"
+                  stroke-linecap="round"/>
+
+            <path d="M260 240 Q350 170 405 145"
+                  fill="none"
+                  stroke="#70401d"
+                  stroke-width="25"
+                  stroke-linecap="round"/>
+
+            <path d="M245 210 Q225 130 205 100"
+                  fill="none"
+                  stroke="#70401d"
+                  stroke-width="18"
+                  stroke-linecap="round"/>
+
+            <circle cx="110" cy="125" r="75"
+                    fill="url(#leafGradient)"/>
+
+            <circle cx="185" cy="90" r="90"
+                    fill="url(#leafGradient)"/>
+
+            <circle cx="275" cy="75" r="95"
+                    fill="url(#leafGradient)"/>
+
+            <circle cx="365" cy="105" r="85"
+                    fill="url(#leafGradient)"/>
+
+            <circle cx="405" cy="165" r="70"
+                    fill="url(#leafGradient)"/>
+
+            <circle cx="95" cy="185" r="65"
+                    fill="url(#leafGradient)"/>
+
+            <!-- GRAPES -->
+
+            <g fill="url(#grapeGradient)">
+
+                <circle cx="125" cy="210" r="17"/>
+                <circle cx="150" cy="220" r="17"/>
+                <circle cx="175" cy="210" r="17"/>
+                <circle cx="137" cy="240" r="17"/>
+                <circle cx="162" cy="245" r="17"/>
+                <circle cx="150" cy="270" r="17"/>
+
+                <circle cx="350" cy="210" r="17"/>
+                <circle cx="375" cy="220" r="17"/>
+                <circle cx="400" cy="210" r="17"/>
+                <circle cx="362" cy="240" r="17"/>
+                <circle cx="387" cy="245" r="17"/>
+                <circle cx="375" cy="270" r="17"/>
+
+                <circle cx="240" cy="165" r="17"/>
+                <circle cx="265" cy="165" r="17"/>
+                <circle cx="252" cy="190" r="17"/>
+                <circle cx="252" cy="215" r="17"/>
+
+            </g>
+
+            <g fill="#efffcf">
+
+                <circle cx="119" cy="204" r="4"/>
+                <circle cx="144" cy="214" r="4"/>
+                <circle cx="344" cy="204" r="4"/>
+                <circle cx="369" cy="214" r="4"/>
+                <circle cx="234" cy="159" r="4"/>
+
+            </g>
+
+        </svg>
+
+    </button>
+
+    <div class="click-text">
+        Click the grape tree!
+    </div>
+
+</section>
+
+
+<!-- UPGRADES -->
+
+<section class="panel">
+
+    <div class="upgrades-title">
+
+        <h2>🛒 Upgrades</h2>
+
+        <span id="upgradeCount">
+            0 upgrades
+        </span>
+
+    </div>
+
+    <div class="upgrade-list"
+         id="upgradeList">
+    </div>
+
+</section>
 
 </div>
 
@@ -501,48 +505,68 @@ header p {
 
 <div class="bottom">
 
-    <section class="panel">
+<section class="panel">
 
-        <h2>🏆 Achievements</h2>
+    <h2>🏆 Achievements</h2>
 
-        <div class="achievements" id="achievements"></div>
+    <div class="achievements"
+         id="achievements">
+    </div>
 
-        <div class="controls">
+    <div class="controls">
 
-            <button class="control-btn" id="saveButton">
-                💾 Save Game
-            </button>
+        <button class="control-btn"
+                id="saveButton">
+            💾 Save Game
+        </button>
 
-            <button class="control-btn" id="exportButton">
-                📋 Export Save
-            </button>
+        <button class="control-btn"
+                id="exportButton">
+            📋 Export Save
+        </button>
 
-            <button class="control-btn" id="importButton">
-                📥 Import Save
-            </button>
+        <button class="control-btn"
+                id="importButton">
+            📥 Import Save
+        </button>
 
-            <button class="control-btn reset" id="resetButton">
-                🔄 Reset Game
-            </button>
+        <button class="control-btn reset"
+                id="resetButton">
+            🔄 Reset Game
+        </button>
 
-        </div>
+    </div>
 
-        <div class="notice">
-            Your game automatically saves every 10 seconds.
-        </div>
+    <div class="notice">
+        Your game automatically saves every 10 seconds.
+    </div>
 
-    </section>
+</section>
 
 </div>
 
 
 <script>
 
+/* =========================
+   GAME VARIABLES
+========================= */
+
 let grapes = 0;
+
 let grapesPerSecond = 0;
+
 let clickPower = 1;
+
+/*
+    Starts at 5%.
+    Critical Hit upgrade increases
+    this by another 5% each time.
+*/
 let criticalChance = 0.05;
+
 let totalClicks = 0;
+
 let totalGrapes = 0;
 
 
@@ -650,16 +674,29 @@ const upgrades = [
         baseCost: 500000000,
         multiplier: 1.40,
         production: 2500000
+    },
+
+    /* =========================
+       CRITICAL HIT
+    ========================= */
+
+    {
+        id: "critical",
+        name: "Critical Hit",
+        icon: "💥",
+        description: "+5% critical chance",
+        baseCost: 200,
+        multiplier: 1.5,
+        production: 0
     }
 
 ];
 
 
-// Add upgrade data
-
 upgrades.forEach(upgrade => {
 
     upgrade.level = 0;
+
     upgrade.cost = upgrade.baseCost;
 
 });
@@ -711,7 +748,10 @@ const achievements = [
         name: "Farm Owner",
         description: "Own 10 upgrades",
         check: () =>
-            upgrades.reduce((sum, u) => sum + u.level, 0) >= 10
+            upgrades.reduce(
+                (sum, u) => sum + u.level,
+                0
+            ) >= 10
     },
 
     {
@@ -726,6 +766,13 @@ const achievements = [
         name: "Grape Emperor",
         description: "Reach 100,000 grapes/sec",
         check: () => grapesPerSecond >= 100000
+    },
+
+    {
+        id: "critical",
+        name: "Critical Master",
+        description: "Reach 25% critical chance",
+        check: () => criticalChance >= 0.25
     }
 
 ];
@@ -734,7 +781,7 @@ let unlockedAchievements = [];
 
 
 /* =========================
-   NUMBER FORMAT
+   FORMAT NUMBERS
 ========================= */
 
 function formatNumber(number) {
@@ -761,15 +808,29 @@ function formatNumber(number) {
 
 function renderUpgrades() {
 
-    const list = document.getElementById("upgradeList");
+    const list =
+        document.getElementById(
+            "upgradeList"
+        );
 
     list.innerHTML = "";
 
     upgrades.forEach(upgrade => {
 
-        const div = document.createElement("div");
+        const div =
+            document.createElement("div");
 
         div.className = "upgrade";
+
+        let description =
+            upgrade.description;
+
+        if (upgrade.id === "critical") {
+
+            description =
+                "+5% critical chance • Critical clicks give 5× grapes";
+
+        }
 
         div.innerHTML = `
 
@@ -781,7 +842,7 @@ function renderUpgrades() {
 
                 <h3>${upgrade.name}</h3>
 
-                <p>${upgrade.description}</p>
+                <p>${description}</p>
 
                 <div class="upgrade-count">
                     Owned: ${upgrade.level}
@@ -792,6 +853,7 @@ function renderUpgrades() {
             <button
                 class="buy"
                 onclick="buyUpgrade('${upgrade.id}')"
+                ${grapes < upgrade.cost ? "disabled" : ""}
             >
 
                 🍇 ${formatNumber(upgrade.cost)}
@@ -814,7 +876,9 @@ function renderUpgrades() {
 function buyUpgrade(id) {
 
     const upgrade =
-        upgrades.find(u => u.id === id);
+        upgrades.find(
+            u => u.id === id
+        );
 
     if (!upgrade)
         return;
@@ -822,11 +886,51 @@ function buyUpgrade(id) {
     if (grapes < upgrade.cost)
         return;
 
+
+    /* Pay for upgrade */
+
     grapes -= upgrade.cost;
 
     upgrade.level++;
 
-    grapesPerSecond += upgrade.production;
+
+    /* =========================
+       NORMAL UPGRADES
+    ========================= */
+
+    if (upgrade.production > 0) {
+
+        grapesPerSecond +=
+            upgrade.production;
+
+    }
+
+
+    /* =========================
+       CRITICAL HIT
+    ========================= */
+
+    if (upgrade.id === "critical") {
+
+        criticalChance += 0.05;
+
+        /*
+            Maximum critical chance
+            is 100%.
+        */
+
+        if (criticalChance > 1) {
+
+            criticalChance = 1;
+
+        }
+
+    }
+
+
+    /* =========================
+       PRICE INCREASE
+    ========================= */
 
     upgrade.cost =
         Math.floor(
@@ -837,8 +941,11 @@ function buyUpgrade(id) {
             )
         );
 
+
     updateDisplay();
+
     renderUpgrades();
+
     checkAchievements();
 
     saveGame();
@@ -847,52 +954,81 @@ function buyUpgrade(id) {
 
 
 /* =========================
-   TREE CLICK
+   CLICK TREE
 ========================= */
 
 document
 .getElementById("treeButton")
-.addEventListener("click", function(event) {
+.addEventListener(
+    "click",
+    function(event) {
 
-    totalClicks++;
+        totalClicks++;
 
-    let amount = clickPower;
+        let amount =
+            clickPower;
 
-    let critical = false;
+        let critical = false;
 
-    if (Math.random() < criticalChance) {
 
-        amount *= 5;
-        critical = true;
+        /*
+            Check if the click
+            becomes critical.
+        */
+
+        if (
+            Math.random() <
+            criticalChance
+        ) {
+
+            amount *= 5;
+
+            critical = true;
+
+        }
+
+
+        grapes += amount;
+
+        totalGrapes += amount;
+
+
+        createPopup(
+            event.clientX,
+            event.clientY,
+            amount,
+            critical
+        );
+
+
+        updateDisplay();
+
+        checkAchievements();
 
     }
-
-    grapes += amount;
-    totalGrapes += amount;
-
-    createPopup(
-        event.clientX,
-        event.clientY,
-        amount,
-        critical
-    );
-
-    updateDisplay();
-    checkAchievements();
-
-});
+);
 
 
 /* =========================
    POPUP
 ========================= */
 
-function createPopup(x, y, amount, critical) {
+function createPopup(
+    x,
+    y,
+    amount,
+    critical
+) {
 
     const popup =
         document.createElement("div");
 
-    popup.className = "popup";
+    popup.className =
+        "popup" +
+        (critical
+            ? " critical-popup"
+            : "");
+
 
     popup.style.left =
         (x - 35) + "px";
@@ -900,10 +1036,18 @@ function createPopup(x, y, amount, critical) {
     popup.style.top =
         (y - 30) + "px";
 
+
     popup.innerHTML = `
 
-        <span class="${critical ? "critical" : ""}">
+        <span>
+
+            ${critical
+                ? "💥 CRITICAL! "
+                : ""
+            }
+
             +${formatNumber(amount)}
+
         </span>
 
         <span class="green-grape-popup">
@@ -920,12 +1064,16 @@ function createPopup(x, y, amount, critical) {
 
     `;
 
+
     document
     .getElementById("treeArea")
     .appendChild(popup);
 
+
     setTimeout(() => {
+
         popup.remove();
+
     }, 900);
 
 }
@@ -938,16 +1086,18 @@ function createPopup(x, y, amount, critical) {
 setInterval(() => {
 
     grapes += grapesPerSecond;
+
     totalGrapes += grapesPerSecond;
 
     updateDisplay();
+
     checkAchievements();
 
 }, 1000);
 
 
 /* =========================
-   DISPLAY
+   UPDATE DISPLAY
 ========================= */
 
 function updateDisplay() {
@@ -957,20 +1107,30 @@ function updateDisplay() {
     .textContent =
         formatNumber(grapes);
 
+
     document
     .getElementById("gps")
     .textContent =
-        formatNumber(grapesPerSecond);
+        formatNumber(
+            grapesPerSecond
+        );
+
 
     document
     .getElementById("clickPower")
     .textContent =
-        formatNumber(clickPower);
+        formatNumber(
+            clickPower
+        );
+
 
     document
     .getElementById("criticalChance")
     .textContent =
-        Math.round(criticalChance * 100) + "%";
+        Math.round(
+            criticalChance * 100
+        ) + "%";
+
 
     const owned =
         upgrades.reduce(
@@ -979,20 +1139,24 @@ function updateDisplay() {
             0
         );
 
+
     document
     .getElementById("upgradeCount")
     .textContent =
         owned + " upgrades";
 
+
     document
     .querySelectorAll(".buy")
-    .forEach((button, index) => {
+    .forEach(
+        (button, index) => {
 
-        button.disabled =
-            grapes <
-            upgrades[index].cost;
+            button.disabled =
+                grapes <
+                upgrades[index].cost;
 
-    });
+        }
+    );
 
 }
 
@@ -1003,22 +1167,25 @@ function updateDisplay() {
 
 function checkAchievements() {
 
-    achievements.forEach(achievement => {
+    achievements.forEach(
+        achievement => {
 
-        if (
-            achievement.check() &&
-            !unlockedAchievements.includes(
-                achievement.id
-            )
-        ) {
+            if (
+                achievement.check() &&
+                !unlockedAchievements
+                    .includes(
+                        achievement.id
+                    )
+            ) {
 
-            unlockedAchievements.push(
-                achievement.id
-            );
+                unlockedAchievements.push(
+                    achievement.id
+                );
+
+            }
 
         }
-
-    });
+    );
 
     renderAchievements();
 
@@ -1028,46 +1195,67 @@ function checkAchievements() {
 function renderAchievements() {
 
     const container =
-        document.getElementById("achievements");
+        document.getElementById(
+            "achievements"
+        );
 
     container.innerHTML = "";
 
-    achievements.forEach(achievement => {
 
-        const unlocked =
-            unlockedAchievements.includes(
-                achievement.id
-            );
+    achievements.forEach(
+        achievement => {
 
-        const div =
-            document.createElement("div");
+            const unlocked =
+                unlockedAchievements
+                    .includes(
+                        achievement.id
+                    );
 
-        div.className =
-            "achievement" +
-            (unlocked ? " unlocked" : "");
 
-        div.innerHTML = `
+            const div =
+                document.createElement(
+                    "div"
+                );
 
-            <strong>
-                ${unlocked ? "🏆" : "🔒"}
-                ${achievement.name}
-            </strong>
 
-            <span>
-                ${achievement.description}
-            </span>
+            div.className =
+                "achievement" +
+                (
+                    unlocked
+                        ? " unlocked"
+                        : ""
+                );
 
-        `;
 
-        container.appendChild(div);
+            div.innerHTML = `
 
-    });
+                <strong>
+                    ${unlocked
+                        ? "🏆"
+                        : "🔒"
+                    }
+
+                    ${achievement.name}
+
+                </strong>
+
+                <span>
+                    ${achievement.description}
+                </span>
+
+            `;
+
+
+            container.appendChild(div);
+
+        }
+    );
 
 }
 
 
 /* =========================
-   SAVE GAME
+   SAVE
 ========================= */
 
 function saveGame() {
@@ -1083,13 +1271,20 @@ function saveGame() {
         unlockedAchievements,
 
         upgrades:
-            upgrades.map(u => ({
-                id: u.id,
-                level: u.level,
-                cost: u.cost
-            }))
+            upgrades.map(
+                u => ({
+
+                    id: u.id,
+
+                    level: u.level,
+
+                    cost: u.cost
+
+                })
+            )
 
     };
+
 
     localStorage.setItem(
         "grapeClickerSave",
@@ -1100,7 +1295,7 @@ function saveGame() {
 
 
 /* =========================
-   LOAD GAME
+   LOAD
 ========================= */
 
 function loadGame() {
@@ -1110,62 +1305,78 @@ function loadGame() {
             "grapeClickerSave"
         );
 
+
     if (!saved)
         return;
+
 
     try {
 
         const data =
             JSON.parse(saved);
 
+
         grapes =
             data.grapes || 0;
+
 
         grapesPerSecond =
             data.grapesPerSecond || 0;
 
+
         clickPower =
             data.clickPower || 1;
 
+
         criticalChance =
-            data.criticalChance || 0.05;
+            data.criticalChance ?? 0.05;
+
 
         totalClicks =
             data.totalClicks || 0;
 
+
         totalGrapes =
             data.totalGrapes || 0;
+
 
         unlockedAchievements =
             data.unlockedAchievements || [];
 
+
         if (data.upgrades) {
 
-            data.upgrades.forEach(savedUpgrade => {
+            data.upgrades.forEach(
+                savedUpgrade => {
 
-                const upgrade =
-                    upgrades.find(
-                        u =>
-                        u.id ===
-                        savedUpgrade.id
-                    );
+                    const upgrade =
+                        upgrades.find(
+                            u =>
+                            u.id ===
+                            savedUpgrade.id
+                        );
 
-                if (upgrade) {
 
-                    upgrade.level =
-                        savedUpgrade.level || 0;
+                    if (upgrade) {
 
-                    upgrade.cost =
-                        savedUpgrade.cost ||
-                        upgrade.baseCost;
+                        upgrade.level =
+                            savedUpgrade.level || 0;
+
+
+                        upgrade.cost =
+                            savedUpgrade.cost ||
+                            upgrade.baseCost;
+
+                    }
 
                 }
-
-            });
+            );
 
         }
 
-    } catch(error) {
+    }
+
+    catch(error) {
 
         console.log(
             "Could not load save."
@@ -1177,82 +1388,98 @@ function loadGame() {
 
 
 /* =========================
-   EXPORT
+   EXPORT SAVE
 ========================= */
 
 document
 .getElementById("exportButton")
-.addEventListener("click", () => {
+.addEventListener(
+    "click",
+    () => {
 
-    saveGame();
+        saveGame();
 
-    const save =
-        localStorage.getItem(
-            "grapeClickerSave"
+        const save =
+            localStorage.getItem(
+                "grapeClickerSave"
+            );
+
+
+        prompt(
+            "Copy your save code:",
+            btoa(save)
         );
 
-    prompt(
-        "Copy your save code:",
-        btoa(save)
-    );
-
-});
+    }
+);
 
 
 /* =========================
-   IMPORT
+   IMPORT SAVE
 ========================= */
 
 document
 .getElementById("importButton")
-.addEventListener("click", () => {
+.addEventListener(
+    "click",
+    () => {
 
-    const code =
-        prompt(
-            "Paste your save code:"
-        );
+        const code =
+            prompt(
+                "Paste your save code:"
+            );
 
-    if (!code)
-        return;
 
-    try {
+        if (!code)
+            return;
 
-        const decoded =
-            atob(code);
 
-        localStorage.setItem(
-            "grapeClickerSave",
-            decoded
-        );
+        try {
 
-        location.reload();
+            const decoded =
+                atob(code);
 
-    } catch {
 
-        alert(
-            "Invalid save code!"
-        );
+            localStorage.setItem(
+                "grapeClickerSave",
+                decoded
+            );
+
+
+            location.reload();
+
+        }
+
+        catch {
+
+            alert(
+                "Invalid save code!"
+            );
+
+        }
 
     }
-
-});
+);
 
 
 /* =========================
-   SAVE BUTTON
+   MANUAL SAVE
 ========================= */
 
 document
 .getElementById("saveButton")
-.addEventListener("click", () => {
+.addEventListener(
+    "click",
+    () => {
 
-    saveGame();
+        saveGame();
 
-    alert(
-        "Game saved! 🍇"
-    );
+        alert(
+            "Game saved! 🍇"
+        );
 
-});
+    }
+);
 
 
 /* =========================
@@ -1261,44 +1488,51 @@ document
 
 document
 .getElementById("resetButton")
-.addEventListener("click", () => {
+.addEventListener(
+    "click",
+    () => {
 
-    const confirmed =
-        confirm(
-            "Are you sure you want to reset your entire grape empire?"
+        const confirmed =
+            confirm(
+                "Are you sure you want to reset your entire grape empire?"
+            );
+
+
+        if (!confirmed)
+            return;
+
+
+        localStorage.removeItem(
+            "grapeClickerSave"
         );
 
-    if (!confirmed)
-        return;
 
-    localStorage.removeItem(
-        "grapeClickerSave"
-    );
+        location.reload();
 
-    location.reload();
-
-});
+    }
+);
 
 
 /* =========================
    AUTO SAVE
 ========================= */
 
-setInterval(() => {
-
-    saveGame();
-
-}, 10000);
+setInterval(
+    saveGame,
+    10000
+);
 
 
 /* =========================
-   START GAME
+   START
 ========================= */
 
 loadGame();
 
 renderUpgrades();
+
 renderAchievements();
+
 updateDisplay();
 
 </script>
