@@ -3,957 +3,471 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grape Tree Clicker</title>
+<title>Grape Clicker 🍇</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
-
 :root {
     --dark: #071b0b;
     --dark2: #102d14;
+    --panel: #16391b;
     --green: #63d63d;
     --light-green: #a5ff70;
     --muted: #a9c6a5;
     --gold: #ffd95a;
+    --white: #f5fff2;
+    --red: #ff6b6b;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    min-height: 100vh;
-    padding: 20px;
-
-    font-family: Arial, Helvetica, sans-serif;
-    color: white;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
+    font-family: Arial, sans-serif;
     background:
-        radial-gradient(
-            circle at 20% 10%,
-            #327b36 0%,
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at 85% 20%,
-            #205b29 0%,
-            transparent 30%
-        ),
-        linear-gradient(
-            135deg,
-            #071b0b,
-            #12351a
-        );
+        radial-gradient(circle at top, #214d27, var(--dark) 60%);
+    color: var(--white);
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    padding: 25px 10px 10px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 42px;
+    color: var(--light-green);
+    text-shadow: 0 0 20px rgba(99,214,61,.4);
+}
+
+header p {
+    color: var(--muted);
 }
 
 .game {
-    width: 980px;
-    max-width: 100%;
-
-    padding: 34px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(13, 33, 18, .98),
-            rgba(7, 20, 10, .98)
-        );
-
-    border: 1px solid rgba(139, 220, 104, .25);
-    border-radius: 30px;
-
-    text-align: center;
-
-    box-shadow:
-        0 30px 80px rgba(0,0,0,.55),
-        inset 0 1px 0 rgba(255,255,255,.04);
+    width: min(1200px, 95%);
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 20px;
 }
 
-/* HEADER */
-
-.logo {
-    font-size: 48px;
-    margin-bottom: 5px;
+.panel {
+    background: rgba(16,45,20,.9);
+    border: 1px solid rgba(165,255,112,.15);
+    border-radius: 22px;
+    padding: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.25);
 }
-
-h1 {
-    margin: 0;
-
-    font-size: clamp(34px, 6vw, 54px);
-
-    background:
-        linear-gradient(
-            90deg,
-            #ffffff,
-            #a9ff82
-        );
-
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-.subtitle {
-    color: var(--muted);
-    margin-top: 8px;
-}
-
-
-/* STATS */
 
 .stats {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    flex-wrap: wrap;
-
-    margin-top: 25px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .stat {
-    min-width: 200px;
+    background: #0b2410;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+}
 
-    padding: 15px 25px;
-
-    background: rgba(255,255,255,.035);
-
-    border: 1px solid rgba(139,220,104,.15);
-
-    border-radius: 16px;
+.stat-number {
+    display: block;
+    font-size: 27px;
+    font-weight: bold;
+    color: var(--light-green);
 }
 
 .stat-label {
     color: var(--muted);
-
     font-size: 13px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1px;
 }
 
-.stat-value {
-    margin-top: 5px;
-
-    font-size: 28px;
-    font-weight: bold;
-}
-
-
-/* TREE AREA */
-
-.tree-section {
-    position: relative;
-
-    height: 390px;
-
+.tree-area {
+    min-height: 500px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-
-    margin-top: 10px;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
 }
-
-
-/* TREE BUTTON */
 
 .tree-button {
-    position: relative;
-
-    width: 360px;
-    height: 360px;
-
-    border: 0;
-    padding: 0;
-
+    border: none;
     background: transparent;
-
     cursor: pointer;
-
-    transition:
-        transform .12s ease,
-        filter .12s ease;
-
-    filter:
-        drop-shadow(
-            0 25px 20px rgba(0,0,0,.4)
-        );
+    transition: transform .1s;
 }
 
 .tree-button:hover {
-    transform: scale(1.035);
+    transform: scale(1.03);
 }
 
 .tree-button:active {
     transform: scale(.94);
 }
 
-
-/* SVG */
-
 .tree-svg {
-    width: 100%;
-    height: 100%;
-
-    overflow: visible;
+    width: min(430px, 85vw);
+    filter: drop-shadow(0 15px 20px rgba(0,0,0,.35));
 }
-
-.tree-shadow {
-    fill: rgba(0,0,0,.25);
-}
-
-.trunk {
-    fill: url(#trunkGradient);
-
-    stroke: #472612;
-    stroke-width: 3;
-}
-
-.branch {
-    fill: none;
-
-    stroke: #6f3b1d;
-    stroke-width: 20;
-
-    stroke-linecap: round;
-}
-
-.leaf-main {
-    fill: url(#leafGradient);
-
-    stroke: #225b25;
-    stroke-width: 4;
-}
-
-.leaf-light {
-    fill: #65c94a;
-
-    opacity: .8;
-}
-
-.leaf-dark {
-    fill: #23782d;
-
-    opacity: .8;
-}
-
-
-/* GREEN GRAPES */
-
-.grape {
-    fill: url(#grapeGradient);
-
-    stroke: #397a25;
-    stroke-width: 3;
-}
-
-.grape-highlight {
-    fill: rgba(255,255,255,.65);
-}
-
-.stem {
-    fill: none;
-
-    stroke: #426e20;
-    stroke-width: 7;
-
-    stroke-linecap: round;
-}
-
-
-/* CLICK POPUP */
 
 .click-text {
+    margin-top: 10px;
+    color: var(--muted);
+}
+
+.popup {
     position: absolute;
-
     pointer-events: none;
-
-    color: var(--light-green);
-
-    font-size: 24px;
+    animation: popup 900ms ease-out forwards;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-weight: bold;
+    font-size: 20px;
+    color: var(--light-green);
+}
 
-    text-shadow:
-        0 2px 8px rgba(0,0,0,.7);
-
-    animation:
-        floatUp .75s ease-out forwards;
+@keyframes popup {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(1.2);
+    }
 }
 
 .green-grape-popup {
-    display: inline-flex;
-
     position: relative;
-
     width: 30px;
-    height: 30px;
-
-    margin-left: 5px;
-
-    vertical-align: middle;
+    height: 35px;
 }
 
 .popup-grape {
     position: absolute;
-
-    width: 10px;
-    height: 10px;
-
+    width: 11px;
+    height: 11px;
     border-radius: 50%;
-
-    border: 1px solid #3f7e20;
-
-    box-shadow:
-        inset -2px -2px 0 rgba(30,80,15,.25);
+    background: radial-gradient(circle at 30% 25%, #d8ff9b, #65d83d 45%, #238c26);
 }
 
-.popup-g1 {
-    left: 10px;
-    top: 0;
-    background: #91df43;
+.popup-g1 { left: 9px; top: 0; }
+.popup-g2 { left: 3px; top: 7px; }
+.popup-g3 { left: 15px; top: 7px; }
+.popup-g4 { left: 0; top: 15px; }
+.popup-g5 { left: 9px; top: 15px; }
+.popup-g6 { left: 18px; top: 15px; }
+.popup-g7 { left: 9px; top: 24px; }
+
+.upgrades-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.popup-g2 {
-    left: 5px;
-    top: 7px;
-    background: #75c832;
+.upgrades-title h2 {
+    margin-top: 0;
 }
 
-.popup-g3 {
-    left: 15px;
-    top: 7px;
-    background: #82d63a;
-}
-
-.popup-g4 {
-    left: 0;
-    top: 14px;
-    background: #64b52b;
-}
-
-.popup-g5 {
-    left: 10px;
-    top: 14px;
-    background: #79cd34;
-}
-
-.popup-g6 {
-    left: 20px;
-    top: 14px;
-    background: #5fa927;
-}
-
-.popup-g7 {
-    left: 10px;
-    top: 22px;
-    background: #70c52f;
-}
-
-@keyframes floatUp {
-    0% {
-        opacity: 1;
-        transform:
-            translateY(0)
-            scale(1);
-    }
-
-    100% {
-        opacity: 0;
-        transform:
-            translateY(-90px)
-            scale(1.15);
-    }
-}
-
-
-/* UPGRADES */
-
-.upgrades {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 16px;
-
-    margin-top: 15px;
+.upgrade-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 5px;
 }
 
 .upgrade {
-    min-height: 170px;
-
-    padding: 22px;
-
-    border: 1px solid
-        rgba(139,220,104,.2);
-
-    border-radius: 20px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(29,63,31,.9),
-            rgba(14,34,17,.95)
-        );
-
-    color: white;
-
-    cursor: pointer;
-
-    transition:
-        transform .15s ease,
-        border-color .15s ease,
-        background .15s ease,
-        box-shadow .15s ease;
+    background: #0b2410;
+    border: 1px solid rgba(165,255,112,.1);
+    border-radius: 15px;
+    padding: 14px;
+    display: grid;
+    grid-template-columns: 55px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    transition: .2s;
 }
 
-.upgrade:hover:not(:disabled) {
-    transform: translateY(-6px);
-
-    border-color:
-        rgba(156,255,104,.7);
-
-    box-shadow:
-        0 12px 30px rgba(0,0,0,.3);
-
-    background:
-        linear-gradient(
-            145deg,
-            #214b24,
-            #122d16
-        );
-}
-
-.upgrade:active:not(:disabled) {
-    transform:
-        translateY(-1px)
-        scale(.98);
-}
-
-.upgrade:disabled {
-    opacity: .4;
-
-    cursor: not-allowed;
+.upgrade:hover {
+    border-color: rgba(165,255,112,.4);
+    transform: translateY(-2px);
 }
 
 .upgrade-icon {
-    font-size: 42px;
+    font-size: 35px;
+    text-align: center;
 }
 
-.upgrade-name {
-    margin-top: 8px;
-
-    font-size: 20px;
-    font-weight: bold;
+.upgrade h3 {
+    margin: 0 0 4px;
+    font-size: 17px;
 }
 
-.upgrade-effect {
-    margin-top: 6px;
-
+.upgrade p {
+    margin: 0;
     color: var(--muted);
-
-    font-size: 14px;
+    font-size: 13px;
 }
 
-.cost {
-    margin-top: 14px;
-
+.upgrade-count {
     color: var(--gold);
-
-    font-weight: bold;
+    font-size: 12px;
+    margin-top: 4px;
 }
 
-
-/* MESSAGE */
-
-.message {
-    height: 30px;
-
-    margin-top: 8px;
-
-    color: #b9ff91;
-
+.buy {
+    border: none;
+    border-radius: 10px;
+    background: var(--green);
+    color: #071b0b;
+    padding: 9px 12px;
     font-weight: bold;
+    cursor: pointer;
+    min-width: 100px;
 }
 
+.buy:hover {
+    background: var(--light-green);
+}
 
-/* RESET */
+.buy:disabled {
+    background: #38553b;
+    color: #788d7b;
+    cursor: not-allowed;
+}
+
+.bottom {
+    width: min(1200px, 95%);
+    margin: 20px auto;
+}
+
+.achievements {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 10px;
+}
+
+.achievement {
+    padding: 14px;
+    border-radius: 14px;
+    background: #0b2410;
+    opacity: .4;
+}
+
+.achievement.unlocked {
+    opacity: 1;
+    border: 1px solid var(--gold);
+}
+
+.achievement strong {
+    display: block;
+    color: var(--gold);
+    margin-bottom: 5px;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+    background: #284c2c;
+    color: white;
+}
+
+.control-btn:hover {
+    background: #37663c;
+}
 
 .reset {
-    display: block;
-
-    margin: 24px auto 0;
-
-    padding: 12px 26px;
-
-    border: 1px solid
-        rgba(255,255,255,.12);
-
-    border-radius: 12px;
-
-    background: #1b3b20;
-
-    color: white;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    transition: .15s;
+    background: #5a2727;
 }
 
 .reset:hover {
-    background: #28582e;
+    background: #7a3030;
 }
 
+.notice {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 10px;
+}
 
-/* MOBILE */
+.critical {
+    color: var(--gold);
+    font-size: 26px;
+    font-weight: bold;
+}
 
-@media (max-width: 750px) {
-
-    body {
-        padding: 10px;
-    }
-
+@media(max-width: 850px) {
     .game {
-        padding: 22px 16px;
-    }
-
-    .upgrades {
         grid-template-columns: 1fr;
     }
 
-    .tree-section {
-        height: 320px;
+    header h1 {
+        font-size: 32px;
     }
 
-    .tree-button {
-        width: 300px;
-        height: 300px;
-    }
-
-    .stats {
-        flex-direction: column;
-    }
-
-    .stat {
-        width: 100%;
+    .tree-area {
+        min-height: 420px;
     }
 }
 </style>
 </head>
 
-
 <body>
+
+<header>
+    <h1>🍇 Grape Clicker</h1>
+    <p>Grow your grape empire!</p>
+</header>
 
 <div class="game">
 
-    <div class="logo">
-        🌳🍇
-    </div>
+    <!-- LEFT SIDE -->
+    <section class="panel tree-area" id="treeArea">
 
-    <h1>
-        Grape Tree Clicker
-    </h1>
+        <div class="stats">
 
-    <div class="subtitle">
-        Grow your green grape empire!
-    </div>
-
-
-    <!-- STATS -->
-
-    <div class="stats">
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Green Grapes
+            <div class="stat">
+                <span class="stat-number" id="grapeCount">0</span>
+                <span class="stat-label">Green Grapes</span>
             </div>
 
-            <div
-                class="stat-value"
-                id="grapes"
-            >
-                0
+            <div class="stat">
+                <span class="stat-number" id="gps">0</span>
+                <span class="stat-label">Grapes / Second</span>
+            </div>
+
+            <div class="stat">
+                <span class="stat-number" id="clickPower">1</span>
+                <span class="stat-label">Grapes / Click</span>
+            </div>
+
+            <div class="stat">
+                <span class="stat-number" id="criticalChance">5%</span>
+                <span class="stat-label">Critical Chance</span>
             </div>
 
         </div>
 
+        <button class="tree-button" id="treeButton">
 
-        <div class="stat">
-
-            <div class="stat-label">
-                Production
-            </div>
-
-            <div
-                class="stat-value"
-                id="perSecond"
-            >
-                0 / sec
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- TREE -->
-
-    <div
-        class="tree-section"
-        id="treeArea"
-    >
-
-        <button
-            class="tree-button"
-            id="tree"
-            aria-label="Click the grape tree"
-        >
-
-            <svg
-                class="tree-svg"
-                viewBox="0 0 360 360"
-                xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg class="tree-svg" viewBox="0 0 500 500">
 
                 <defs>
 
-                    <!-- Leaf gradient -->
+                    <radialGradient id="leafGradient">
+                        <stop offset="0%" stop-color="#9cff72"/>
+                        <stop offset="100%" stop-color="#238b31"/>
+                    </radialGradient>
 
-                    <linearGradient
-                        id="leafGradient"
-                        x1="0"
-                        y1="0"
-                        x2="1"
-                        y2="1"
-                    >
-                        <stop
-                            offset="0%"
-                            stop-color="#8be35a"
-                        />
-
-                        <stop
-                            offset="45%"
-                            stop-color="#45aa3a"
-                        />
-
-                        <stop
-                            offset="100%"
-                            stop-color="#23772b"
-                        />
+                    <linearGradient id="trunkGradient"
+                        x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#512b12"/>
+                        <stop offset="50%" stop-color="#8b5325"/>
+                        <stop offset="100%" stop-color="#43230e"/>
                     </linearGradient>
 
-
-                    <!-- Trunk gradient -->
-
-                    <linearGradient
-                        id="trunkGradient"
-                        x1="0"
-                        y1="0"
-                        x2="1"
-                        y2="1"
-                    >
-                        <stop
-                            offset="0%"
-                            stop-color="#a86431"
-                        />
-
-                        <stop
-                            offset="50%"
-                            stop-color="#75401f"
-                        />
-
-                        <stop
-                            offset="100%"
-                            stop-color="#482414"
-                        />
-                    </linearGradient>
-
-
-                    <!-- Green grape gradient -->
-
-                    <radialGradient
-                        id="grapeGradient"
-                        cx="30%"
-                        cy="25%"
-                    >
-
-                        <stop
-                            offset="0%"
-                            stop-color="#e1ff9b"
-                        />
-
-                        <stop
-                            offset="35%"
-                            stop-color="#8bdc3c"
-                        />
-
-                        <stop
-                            offset="75%"
-                            stop-color="#54a92c"
-                        />
-
-                        <stop
-                            offset="100%"
-                            stop-color="#347720"
-                        />
-
+                    <radialGradient id="grapeGradient">
+                        <stop offset="0%" stop-color="#d9ff9d"/>
+                        <stop offset="40%" stop-color="#65db3d"/>
+                        <stop offset="100%" stop-color="#238b26"/>
                     </radialGradient>
 
                 </defs>
 
+                <!-- shadow -->
+                <ellipse cx="250" cy="460" rx="150" ry="25"
+                    fill="rgba(0,0,0,.25)"/>
 
-                <!-- Ground -->
+                <!-- trunk -->
+                <path d="M220 450
+                         C225 390 220 330 205 275
+                         C190 220 210 170 250 145
+                         C290 170 310 220 295 275
+                         C280 330 275 390 280 450Z"
+                      fill="url(#trunkGradient)"/>
 
-                <ellipse
-                    class="tree-shadow"
-                    cx="180"
-                    cy="337"
-                    rx="115"
-                    ry="17"
-                />
+                <!-- branches -->
+                <path d="M245 250 Q160 180 105 150"
+                      fill="none"
+                      stroke="#70401d"
+                      stroke-width="25"
+                      stroke-linecap="round"/>
 
+                <path d="M260 240 Q350 170 405 145"
+                      fill="none"
+                      stroke="#70401d"
+                      stroke-width="25"
+                      stroke-linecap="round"/>
 
-                <!-- Branches -->
+                <path d="M245 210 Q225 130 205 100"
+                      fill="none"
+                      stroke="#70401d"
+                      stroke-width="18"
+                      stroke-linecap="round"/>
 
-                <path
-                    class="branch"
-                    d="
-                        M180 275
-                        C150 235
-                        120 215
-                        80 195
-                    "
-                />
+                <!-- leaves -->
+                <circle cx="110" cy="125" r="75" fill="url(#leafGradient)"/>
+                <circle cx="185" cy="90" r="90" fill="url(#leafGradient)"/>
+                <circle cx="275" cy="75" r="95" fill="url(#leafGradient)"/>
+                <circle cx="365" cy="105" r="85" fill="url(#leafGradient)"/>
+                <circle cx="405" cy="165" r="70" fill="url(#leafGradient)"/>
+                <circle cx="95" cy="185" r="65" fill="url(#leafGradient)"/>
 
-                <path
-                    class="branch"
-                    d="
-                        M180 270
-                        C210 230
-                        245 210
-                        285 190
-                    "
-                />
+                <!-- grape clusters -->
 
+                <g fill="url(#grapeGradient)">
 
-                <!-- Trunk -->
+                    <circle cx="125" cy="210" r="17"/>
+                    <circle cx="150" cy="220" r="17"/>
+                    <circle cx="175" cy="210" r="17"/>
+                    <circle cx="137" cy="240" r="17"/>
+                    <circle cx="162" cy="245" r="17"/>
+                    <circle cx="150" cy="270" r="17"/>
 
-                <path
-                    class="trunk"
-                    d="
-                        M155 320
-                        C160 275 155 235 165 195
-                        C172 168 185 168 194 195
-                        C205 235 200 275 207 320
-                        Z
-                    "
-                />
+                    <circle cx="350" cy="210" r="17"/>
+                    <circle cx="375" cy="220" r="17"/>
+                    <circle cx="400" cy="210" r="17"/>
+                    <circle cx="362" cy="240" r="17"/>
+                    <circle cx="387" cy="245" r="17"/>
+                    <circle cx="375" cy="270" r="17"/>
 
+                    <circle cx="240" cy="165" r="17"/>
+                    <circle cx="265" cy="165" r="17"/>
+                    <circle cx="252" cy="190" r="17"/>
+                    <circle cx="252" cy="215" r="17"/>
 
-                <!-- Leaves -->
+                </g>
 
-                <circle
-                    class="leaf-main"
-                    cx="115"
-                    cy="155"
-                    r="72"
-                />
+                <!-- highlights -->
+                <g fill="#efffcf">
 
-                <circle
-                    class="leaf-main"
-                    cx="180"
-                    cy="115"
-                    r="92"
-                />
-
-                <circle
-                    class="leaf-main"
-                    cx="250"
-                    cy="155"
-                    r="72"
-                />
-
-                <circle
-                    class="leaf-main"
-                    cx="150"
-                    cy="180"
-                    r="75"
-                />
-
-                <circle
-                    class="leaf-main"
-                    cx="215"
-                    cy="180"
-                    r="75"
-                />
-
-
-                <!-- Leaf highlights -->
-
-                <ellipse
-                    class="leaf-light"
-                    cx="150"
-                    cy="80"
-                    rx="42"
-                    ry="25"
-                />
-
-                <ellipse
-                    class="leaf-light"
-                    cx="105"
-                    cy="135"
-                    rx="28"
-                    ry="17"
-                />
-
-                <ellipse
-                    class="leaf-dark"
-                    cx="260"
-                    cy="155"
-                    rx="35"
-                    ry="22"
-                />
-
-
-                <!-- Grape stems -->
-
-                <path
-                    class="stem"
-                    d="
-                        M180 125
-                        C178 145
-                        175 160
-                        165 180
-                    "
-                />
-
-                <path
-                    class="stem"
-                    d="
-                        M235 145
-                        C225 160
-                        220 175
-                        215 190
-                    "
-                />
-
-
-                <!-- GREEN GRAPE CLUSTER -->
-
-                <g>
-
-                    <circle
-                        class="grape"
-                        cx="165"
-                        cy="155"
-                        r="22"
-                    />
-
-                    <circle
-                        class="grape"
-                        cx="195"
-                        cy="155"
-                        r="22"
-                    />
-
-                    <circle
-                        class="grape"
-                        cx="150"
-                        cy="178"
-                        r="22"
-                    />
-
-                    <circle
-                        class="grape"
-                        cx="180"
-                        cy="180"
-                        r="22"
-                    />
-
-                    <circle
-                        class="grape"
-                        cx="210"
-                        cy="180"
-                        r="22"
-                    />
-
-                    <circle
-                        class="grape"
-                        cx="165"
-                        cy="205"
-                        r="22"
-                    />
-
-                    <circle
-                        class="grape"
-                        cx="195"
-                        cy="205"
-                        r="22"
-                    />
-
-                    <circle
-                        class="grape"
-                        cx="180"
-                        cy="230"
-                        r="22"
-                    />
-
-
-                    <!-- Highlights -->
-
-                    <circle
-                        class="grape-highlight"
-                        cx="158"
-                        cy="149"
-                        r="5"
-                    />
-
-                    <circle
-                        class="grape-highlight"
-                        cx="188"
-                        cy="149"
-                        r="5"
-                    />
-
-                    <circle
-                        class="grape-highlight"
-                        cx="143"
-                        cy="172"
-                        r="5"
-                    />
-
-                    <circle
-                        class="grape-highlight"
-                        cx="173"
-                        cy="174"
-                        r="5"
-                    />
-
-                    <circle
-                        class="grape-highlight"
-                        cx="203"
-                        cy="174"
-                        r="5"
-                    />
-
-                    <circle
-                        class="grape-highlight"
-                        cx="158"
-                        cy="199"
-                        r="5"
-                    />
-
-                    <circle
-                        class="grape-highlight"
-                        cx="188"
-                        cy="199"
-                        r="5"
-                    />
+                    <circle cx="119" cy="204" r="4"/>
+                    <circle cx="144" cy="214" r="4"/>
+                    <circle cx="344" cy="204" r="4"/>
+                    <circle cx="369" cy="214" r="4"/>
+                    <circle cx="234" cy="159" r="4"/>
 
                 </g>
 
@@ -961,572 +475,784 @@ h1 {
 
         </button>
 
-    </div>
+        <div class="click-text">
+            Click the grape tree!
+        </div>
+
+    </section>
 
 
-    <div
-        class="message"
-        id="message"
-    ></div>
+    <!-- RIGHT SIDE -->
+    <section class="panel">
+
+        <div class="upgrades-title">
+            <h2>🛒 Upgrades</h2>
+            <span id="upgradeCount">0</span>
+        </div>
+
+        <div class="upgrade-list" id="upgradeList"></div>
+
+    </section>
+
+</div>
 
 
-    <!-- UPGRADES -->
+<!-- ACHIEVEMENTS -->
 
-    <div class="upgrades">
+<div class="bottom">
 
-        <!-- VINE -->
+    <section class="panel">
 
-        <button
-            class="upgrade"
-            id="vine"
-        >
+        <h2>🏆 Achievements</h2>
 
-            <div class="upgrade-icon">
-                🌱
-            </div>
+        <div class="achievements" id="achievements"></div>
 
-            <div class="upgrade-name">
-                Grape Vine
-            </div>
+        <div class="controls">
 
-            <div class="upgrade-effect">
-                +1 grape per second
-            </div>
+            <button class="control-btn" id="saveButton">
+                💾 Save Game
+            </button>
 
-            <div
-                class="cost"
-                id="vineCost"
-            >
-                Cost: 25
-            </div>
+            <button class="control-btn" id="exportButton">
+                📋 Export Save
+            </button>
 
-        </button>
+            <button class="control-btn" id="importButton">
+                📥 Import Save
+            </button>
 
+            <button class="control-btn reset" id="resetButton">
+                🔄 Reset Game
+            </button>
 
-        <!-- FARMER -->
+        </div>
 
-        <button
-            class="upgrade"
-            id="farmer"
-        >
+        <div class="notice">
+            Your game automatically saves every 10 seconds.
+        </div>
 
-            <div class="upgrade-icon">
-                👨‍🌾
-            </div>
-
-            <div class="upgrade-name">
-                Grape Farmer
-            </div>
-
-            <div class="upgrade-effect">
-                +3 grapes per second
-            </div>
-
-            <div
-                class="cost"
-                id="farmerCost"
-            >
-                Cost: 150
-            </div>
-
-        </button>
-
-
-        <!-- FACTORY -->
-
-        <button
-            class="upgrade"
-            id="factory"
-        >
-
-            <div class="upgrade-icon">
-                🏭
-            </div>
-
-            <div class="upgrade-name">
-                Grape Factory
-            </div>
-
-            <div class="upgrade-effect">
-                +50 grapes per second
-            </div>
-
-            <div
-                class="cost"
-                id="factoryCost"
-            >
-                Cost: 750
-            </div>
-
-        </button>
-
-    </div>
-
-
-    <!-- RESET -->
-
-    <button
-        class="reset"
-        id="reset"
-    >
-        Reset Game
-    </button>
+    </section>
 
 </div>
 
 
 <script>
 
-/* =========================
-   GAME DATA
-========================= */
-
-let grapes =
-    Number(localStorage.getItem("grapes")) || 0;
-
-let grapesPerSecond =
-    Number(
-        localStorage.getItem(
-            "grapesPerSecond"
-        )
-    ) || 0;
-
-
-let vineCost =
-    Number(
-        localStorage.getItem(
-            "vineCost"
-        )
-    ) || 25;
-
-let farmerCost =
-    Number(
-        localStorage.getItem(
-            "farmerCost"
-        )
-    ) || 150;
-
-let factoryCost =
-    Number(
-        localStorage.getItem(
-            "factoryCost"
-        )
-    ) || 750;
+let grapes = 0;
+let grapesPerSecond = 0;
+let clickPower = 1;
+let criticalChance = 0.05;
+let totalClicks = 0;
+let totalGrapes = 0;
 
 
 /* =========================
-   ELEMENTS
+   UPGRADES
 ========================= */
 
-const grapesDisplay =
-    document.getElementById(
-        "grapes"
-    );
+const upgrades = [
 
-const perSecondDisplay =
-    document.getElementById(
-        "perSecond"
-    );
+    {
+        id: "vine",
+        name: "Grape Vine",
+        icon: "🌱",
+        description: "+1 grape per second",
+        baseCost: 25,
+        multiplier: 1.15,
+        production: 1
+    },
 
-const tree =
-    document.getElementById(
-        "tree"
-    );
+    {
+        id: "farmer",
+        name: "Grape Farmer",
+        icon: "👨‍🌾",
+        description: "+3 grapes per second",
+        baseCost: 150,
+        multiplier: 1.18,
+        production: 3
+    },
 
-const treeArea =
-    document.getElementById(
-        "treeArea"
-    );
+    {
+        id: "factory",
+        name: "Grape Factory",
+        icon: "🏭",
+        description: "+50 grapes per second",
+        baseCost: 750,
+        multiplier: 1.20,
+        production: 50
+    },
 
-const message =
-    document.getElementById(
-        "message"
-    );
+    {
+        id: "tractor",
+        name: "Grape Tractor",
+        icon: "🚜",
+        description: "+250 grapes per second",
+        baseCost: 4000,
+        multiplier: 1.22,
+        production: 250
+    },
+
+    {
+        id: "laboratory",
+        name: "Grape Laboratory",
+        icon: "🧪",
+        description: "+1,000 grapes per second",
+        baseCost: 25000,
+        multiplier: 1.25,
+        production: 1000
+    },
+
+    {
+        id: "empire",
+        name: "Grape Empire",
+        icon: "👑",
+        description: "+5,000 grapes per second",
+        baseCost: 150000,
+        multiplier: 1.28,
+        production: 5000
+    },
+
+    {
+        id: "golden",
+        name: "Golden Grape",
+        icon: "🌟",
+        description: "+25,000 grapes per second",
+        baseCost: 1000000,
+        multiplier: 1.30,
+        production: 25000
+    },
+
+    {
+        id: "supervine",
+        name: "Super Vine",
+        icon: "⚡",
+        description: "+100,000 grapes per second",
+        baseCost: 7500000,
+        multiplier: 1.32,
+        production: 100000
+    },
+
+    {
+        id: "diamond",
+        name: "Diamond Grape",
+        icon: "💎",
+        description: "+500,000 grapes per second",
+        baseCost: 50000000,
+        multiplier: 1.35,
+        production: 500000
+    },
+
+    {
+        id: "kingdom",
+        name: "Grape Kingdom",
+        icon: "🏰",
+        description: "+2,500,000 grapes per second",
+        baseCost: 500000000,
+        multiplier: 1.40,
+        production: 2500000
+    }
+
+];
 
 
-const vineButton =
-    document.getElementById(
-        "vine"
-    );
+// Add upgrade data
 
-const farmerButton =
-    document.getElementById(
-        "farmer"
-    );
+upgrades.forEach(upgrade => {
 
-const factoryButton =
-    document.getElementById(
-        "factory"
-    );
+    upgrade.level = 0;
+    upgrade.cost = upgrade.baseCost;
 
-
-const vineCostDisplay =
-    document.getElementById(
-        "vineCost"
-    );
-
-const farmerCostDisplay =
-    document.getElementById(
-        "farmerCost"
-    );
-
-const factoryCostDisplay =
-    document.getElementById(
-        "factoryCost"
-    );
+});
 
 
 /* =========================
-   SAVE
+   ACHIEVEMENTS
 ========================= */
 
-function saveGame() {
+const achievements = [
 
-    localStorage.setItem(
-        "grapes",
-        grapes
-    );
+    {
+        id: "first",
+        name: "First Grape",
+        description: "Collect 1 grape",
+        check: () => totalGrapes >= 1
+    },
 
-    localStorage.setItem(
-        "grapesPerSecond",
-        grapesPerSecond
-    );
+    {
+        id: "hundred",
+        name: "Little Vineyard",
+        description: "Collect 100 grapes",
+        check: () => totalGrapes >= 100
+    },
 
-    localStorage.setItem(
-        "vineCost",
-        vineCost
-    );
+    {
+        id: "thousand",
+        name: "Grape Lover",
+        description: "Collect 1,000 grapes",
+        check: () => totalGrapes >= 1000
+    },
 
-    localStorage.setItem(
-        "farmerCost",
-        farmerCost
-    );
+    {
+        id: "million",
+        name: "Grape Millionaire",
+        description: "Collect 1,000,000 grapes",
+        check: () => totalGrapes >= 1000000
+    },
 
-    localStorage.setItem(
-        "factoryCost",
-        factoryCost
-    );
+    {
+        id: "clicker",
+        name: "Click Master",
+        description: "Click 1,000 times",
+        check: () => totalClicks >= 1000
+    },
+
+    {
+        id: "farmer",
+        name: "Farm Owner",
+        description: "Own 10 upgrades",
+        check: () =>
+            upgrades.reduce((sum, u) => sum + u.level, 0) >= 10
+    },
+
+    {
+        id: "factory",
+        name: "Industrialist",
+        description: "Reach 1,000 grapes/sec",
+        check: () => grapesPerSecond >= 1000
+    },
+
+    {
+        id: "empire",
+        name: "Grape Emperor",
+        description: "Reach 100,000 grapes/sec",
+        check: () => grapesPerSecond >= 100000
+    }
+
+];
+
+let unlockedAchievements = [];
+
+
+/* =========================
+   NUMBER FORMAT
+========================= */
+
+function formatNumber(number) {
+
+    if (number < 1000)
+        return Math.floor(number).toLocaleString();
+
+    if (number < 1000000)
+        return (number / 1000).toFixed(1) + "K";
+
+    if (number < 1000000000)
+        return (number / 1000000).toFixed(1) + "M";
+
+    if (number < 1000000000000)
+        return (number / 1000000000).toFixed(1) + "B";
+
+    return (number / 1000000000000).toFixed(1) + "T";
 }
 
 
 /* =========================
-   UPDATE DISPLAY
+   RENDER UPGRADES
 ========================= */
 
-function updateDisplay() {
+function renderUpgrades() {
 
-    grapesDisplay.textContent =
+    const list = document.getElementById("upgradeList");
+
+    list.innerHTML = "";
+
+    upgrades.forEach(upgrade => {
+
+        const div = document.createElement("div");
+
+        div.className = "upgrade";
+
+        div.innerHTML = `
+
+            <div class="upgrade-icon">
+                ${upgrade.icon}
+            </div>
+
+            <div>
+
+                <h3>${upgrade.name}</h3>
+
+                <p>${upgrade.description}</p>
+
+                <div class="upgrade-count">
+                    Owned: ${upgrade.level}
+                </div>
+
+            </div>
+
+            <button
+                class="buy"
+                onclick="buyUpgrade('${upgrade.id}')"
+            >
+
+                🍇 ${formatNumber(upgrade.cost)}
+
+            </button>
+
+        `;
+
+        list.appendChild(div);
+
+    });
+
+}
+
+
+/* =========================
+   BUY UPGRADE
+========================= */
+
+function buyUpgrade(id) {
+
+    const upgrade =
+        upgrades.find(u => u.id === id);
+
+    if (!upgrade)
+        return;
+
+    if (grapes < upgrade.cost)
+        return;
+
+    grapes -= upgrade.cost;
+
+    upgrade.level++;
+
+    grapesPerSecond += upgrade.production;
+
+    upgrade.cost =
         Math.floor(
-            grapes
-        ).toLocaleString();
+            upgrade.baseCost *
+            Math.pow(
+                upgrade.multiplier,
+                upgrade.level
+            )
+        );
 
+    updateDisplay();
+    renderUpgrades();
+    checkAchievements();
 
-    perSecondDisplay.textContent =
-        grapesPerSecond
-        .toLocaleString()
-        + " / sec";
+    saveGame();
 
-
-    vineCostDisplay.textContent =
-        "Cost: "
-        + vineCost.toLocaleString();
-
-
-    farmerCostDisplay.textContent =
-        "Cost: "
-        + farmerCost.toLocaleString();
-
-
-    factoryCostDisplay.textContent =
-        "Cost: "
-        + factoryCost.toLocaleString();
-
-
-    vineButton.disabled =
-        grapes < vineCost;
-
-    farmerButton.disabled =
-        grapes < farmerCost;
-
-    factoryButton.disabled =
-        grapes < factoryCost;
 }
 
 
 /* =========================
-   GREEN GRAPE POPUP
+   TREE CLICK
 ========================= */
 
-function createPopup() {
+document
+.getElementById("treeButton")
+.addEventListener("click", function(event) {
+
+    totalClicks++;
+
+    let amount = clickPower;
+
+    let critical = false;
+
+    if (Math.random() < criticalChance) {
+
+        amount *= 5;
+        critical = true;
+
+    }
+
+    grapes += amount;
+    totalGrapes += amount;
+
+    createPopup(
+        event.clientX,
+        event.clientY,
+        amount,
+        critical
+    );
+
+    updateDisplay();
+    checkAchievements();
+
+});
+
+
+/* =========================
+   POPUP
+========================= */
+
+function createPopup(x, y, amount, critical) {
 
     const popup =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
-    popup.className =
-        "click-text";
-
-
-    const plus =
-        document.createElement(
-            "span"
-        );
-
-    plus.textContent =
-        "+1";
-
-
-    const grape =
-        document.createElement(
-            "span"
-        );
-
-    grape.className =
-        "green-grape-popup";
-
-
-    const positions = [
-        ["popup-g1"],
-        ["popup-g2"],
-        ["popup-g3"],
-        ["popup-g4"],
-        ["popup-g5"],
-        ["popup-g6"],
-        ["popup-g7"]
-    ];
-
-
-    positions.forEach(
-        function(classes) {
-
-            const dot =
-                document.createElement(
-                    "span"
-                );
-
-            dot.className =
-                "popup-grape "
-                + classes[0];
-
-            grape.appendChild(dot);
-
-        }
-    );
-
-
-    popup.appendChild(
-        plus
-    );
-
-    popup.appendChild(
-        grape
-    );
-
+    popup.className = "popup";
 
     popup.style.left =
-        (40 + Math.random() * 20)
-        + "%";
+        (x - 35) + "px";
 
     popup.style.top =
-        (40 + Math.random() * 15)
-        + "%";
+        (y - 30) + "px";
 
+    popup.innerHTML = `
 
-    treeArea.appendChild(
-        popup
-    );
+        <span class="${critical ? "critical" : ""}">
+            +${formatNumber(amount)}
+        </span>
 
+        <span class="green-grape-popup">
 
-    setTimeout(
-        function() {
+            <span class="popup-grape popup-g1"></span>
+            <span class="popup-grape popup-g2"></span>
+            <span class="popup-grape popup-g3"></span>
+            <span class="popup-grape popup-g4"></span>
+            <span class="popup-grape popup-g5"></span>
+            <span class="popup-grape popup-g6"></span>
+            <span class="popup-grape popup-g7"></span>
 
-            popup.remove();
+        </span>
 
-        },
-        750
-    );
+    `;
+
+    document
+    .getElementById("treeArea")
+    .appendChild(popup);
+
+    setTimeout(() => {
+        popup.remove();
+    }, 900);
+
 }
-
-
-/* =========================
-   MESSAGE
-========================= */
-
-function showMessage(text) {
-
-    message.textContent =
-        text;
-
-
-    setTimeout(
-        function() {
-
-            message.textContent =
-                "";
-
-        },
-        1300
-    );
-}
-
-
-/* =========================
-   CLICK TREE
-========================= */
-
-tree.addEventListener(
-    "click",
-    function() {
-
-        grapes += 1;
-
-        createPopup();
-
-        updateDisplay();
-
-        saveGame();
-
-    }
-);
-
-
-/* =========================
-   BUY VINE
-========================= */
-
-vineButton.addEventListener(
-    "click",
-    function() {
-
-        if (
-            grapes <
-            vineCost
-        ) {
-            return;
-        }
-
-
-        grapes -= vineCost;
-
-        grapesPerSecond += 1;
-
-
-        vineCost =
-            Math.floor(
-                vineCost * 1.15
-            );
-
-
-        showMessage(
-            "🌱 Grape Vine purchased!"
-        );
-
-
-        updateDisplay();
-
-        saveGame();
-
-    }
-);
-
-
-/* =========================
-   BUY FARMER
-========================= */
-
-farmerButton.addEventListener(
-    "click",
-    function() {
-
-        if (
-            grapes <
-            farmerCost
-        ) {
-            return;
-        }
-
-
-        grapes -= farmerCost;
-
-        grapesPerSecond += 3;
-
-
-        farmerCost =
-            Math.floor(
-                farmerCost * 1.18
-            );
-
-
-        showMessage(
-            "👨‍🌾 Grape Farmer hired!"
-        );
-
-
-        updateDisplay();
-
-        saveGame();
-
-    }
-);
-
-
-/* =========================
-   BUY FACTORY
-========================= */
-
-factoryButton.addEventListener(
-    "click",
-    function() {
-
-        if (
-            grapes <
-            factoryCost
-        ) {
-            return;
-        }
-
-
-        grapes -= factoryCost;
-
-        grapesPerSecond += 50;
-
-
-        factoryCost =
-            Math.floor(
-                factoryCost * 1.20
-            );
-
-
-        showMessage(
-            "🏭 Grape Factory purchased!"
-        );
-
-
-        updateDisplay();
-
-        saveGame();
-
-    }
-);
 
 
 /* =========================
    AUTOMATIC PRODUCTION
 ========================= */
 
-setInterval(
-    function() {
+setInterval(() => {
 
-        grapes += grapesPerSecond;
+    grapes += grapesPerSecond;
+    totalGrapes += grapesPerSecond;
 
-        updateDisplay();
+    updateDisplay();
+    checkAchievements();
 
-        saveGame();
+}, 1000);
 
-    },
-    1000
-);
+
+/* =========================
+   DISPLAY
+========================= */
+
+function updateDisplay() {
+
+    document
+    .getElementById("grapeCount")
+    .textContent =
+        formatNumber(grapes);
+
+    document
+    .getElementById("gps")
+    .textContent =
+        formatNumber(grapesPerSecond);
+
+    document
+    .getElementById("clickPower")
+    .textContent =
+        formatNumber(clickPower);
+
+    document
+    .getElementById("criticalChance")
+    .textContent =
+        Math.round(criticalChance * 100) + "%";
+
+    const owned =
+        upgrades.reduce(
+            (sum, upgrade) =>
+                sum + upgrade.level,
+            0
+        );
+
+    document
+    .getElementById("upgradeCount")
+    .textContent =
+        owned + " upgrades";
+
+    document
+    .querySelectorAll(".buy")
+    .forEach((button, index) => {
+
+        button.disabled =
+            grapes <
+            upgrades[index].cost;
+
+    });
+
+}
+
+
+/* =========================
+   ACHIEVEMENTS
+========================= */
+
+function checkAchievements() {
+
+    achievements.forEach(achievement => {
+
+        if (
+            achievement.check() &&
+            !unlockedAchievements.includes(
+                achievement.id
+            )
+        ) {
+
+            unlockedAchievements.push(
+                achievement.id
+            );
+
+        }
+
+    });
+
+    renderAchievements();
+
+}
+
+
+function renderAchievements() {
+
+    const container =
+        document.getElementById("achievements");
+
+    container.innerHTML = "";
+
+    achievements.forEach(achievement => {
+
+        const unlocked =
+            unlockedAchievements.includes(
+                achievement.id
+            );
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "achievement" +
+            (unlocked ? " unlocked" : "");
+
+        div.innerHTML = `
+
+            <strong>
+                ${unlocked ? "🏆" : "🔒"}
+                ${achievement.name}
+            </strong>
+
+            <span>
+                ${achievement.description}
+            </span>
+
+        `;
+
+        container.appendChild(div);
+
+    });
+
+}
+
+
+/* =========================
+   SAVE GAME
+========================= */
+
+function saveGame() {
+
+    const saveData = {
+
+        grapes,
+        grapesPerSecond,
+        clickPower,
+        criticalChance,
+        totalClicks,
+        totalGrapes,
+        unlockedAchievements,
+
+        upgrades:
+            upgrades.map(u => ({
+                id: u.id,
+                level: u.level,
+                cost: u.cost
+            }))
+
+    };
+
+    localStorage.setItem(
+        "grapeClickerSave",
+        JSON.stringify(saveData)
+    );
+
+}
+
+
+/* =========================
+   LOAD GAME
+========================= */
+
+function loadGame() {
+
+    const saved =
+        localStorage.getItem(
+            "grapeClickerSave"
+        );
+
+    if (!saved)
+        return;
+
+    try {
+
+        const data =
+            JSON.parse(saved);
+
+        grapes =
+            data.grapes || 0;
+
+        grapesPerSecond =
+            data.grapesPerSecond || 0;
+
+        clickPower =
+            data.clickPower || 1;
+
+        criticalChance =
+            data.criticalChance || 0.05;
+
+        totalClicks =
+            data.totalClicks || 0;
+
+        totalGrapes =
+            data.totalGrapes || 0;
+
+        unlockedAchievements =
+            data.unlockedAchievements || [];
+
+        if (data.upgrades) {
+
+            data.upgrades.forEach(savedUpgrade => {
+
+                const upgrade =
+                    upgrades.find(
+                        u =>
+                        u.id ===
+                        savedUpgrade.id
+                    );
+
+                if (upgrade) {
+
+                    upgrade.level =
+                        savedUpgrade.level || 0;
+
+                    upgrade.cost =
+                        savedUpgrade.cost ||
+                        upgrade.baseCost;
+
+                }
+
+            });
+
+        }
+
+    } catch(error) {
+
+        console.log(
+            "Could not load save."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   EXPORT
+========================= */
+
+document
+.getElementById("exportButton")
+.addEventListener("click", () => {
+
+    saveGame();
+
+    const save =
+        localStorage.getItem(
+            "grapeClickerSave"
+        );
+
+    prompt(
+        "Copy your save code:",
+        btoa(save)
+    );
+
+});
+
+
+/* =========================
+   IMPORT
+========================= */
+
+document
+.getElementById("importButton")
+.addEventListener("click", () => {
+
+    const code =
+        prompt(
+            "Paste your save code:"
+        );
+
+    if (!code)
+        return;
+
+    try {
+
+        const decoded =
+            atob(code);
+
+        localStorage.setItem(
+            "grapeClickerSave",
+            decoded
+        );
+
+        location.reload();
+
+    } catch {
+
+        alert(
+            "Invalid save code!"
+        );
+
+    }
+
+});
+
+
+/* =========================
+   SAVE BUTTON
+========================= */
+
+document
+.getElementById("saveButton")
+.addEventListener("click", () => {
+
+    saveGame();
+
+    alert(
+        "Game saved! 🍇"
+    );
+
+});
 
 
 /* =========================
@@ -1534,46 +1260,45 @@ setInterval(
 ========================= */
 
 document
-    .getElementById("reset")
-    .addEventListener(
-        "click",
-        function() {
+.getElementById("resetButton")
+.addEventListener("click", () => {
 
-            if (
-                !confirm(
-                    "Are you sure you want to reset your grape empire?"
-                )
-            ) {
-                return;
-            }
+    const confirmed =
+        confirm(
+            "Are you sure you want to reset your entire grape empire?"
+        );
 
+    if (!confirmed)
+        return;
 
-            grapes = 0;
-
-            grapesPerSecond = 0;
-
-            vineCost = 25;
-
-            farmerCost = 150;
-
-            factoryCost = 750;
-
-
-            saveGame();
-
-            updateDisplay();
-
-
-            showMessage(
-                "🔄 Game reset!"
-            );
-
-        }
+    localStorage.removeItem(
+        "grapeClickerSave"
     );
 
+    location.reload();
 
-/* START */
+});
 
+
+/* =========================
+   AUTO SAVE
+========================= */
+
+setInterval(() => {
+
+    saveGame();
+
+}, 10000);
+
+
+/* =========================
+   START GAME
+========================= */
+
+loadGame();
+
+renderUpgrades();
+renderAchievements();
 updateDisplay();
 
 </script>
