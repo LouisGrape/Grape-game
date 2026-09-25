@@ -1,10 +1,8 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Grape Clicker</title>
 
 <style>
@@ -153,57 +151,22 @@ h1 {
 
     <div class="upgrades">
 
-        <!-- GRAPE VINE -->
         <button class="upgrade" id="vine">
-
-            <div class="upgrade-title">
-                🌱 Grape Vine
-            </div>
-
-            <div>
-                +1 grape per second
-            </div>
-
-            <div class="cost">
-                Cost: 25
-            </div>
-
+            <div class="upgrade-title">🌱 Grape Vine</div>
+            <div>+1 grape per second</div>
+            <div class="cost">Cost: 25</div>
         </button>
 
-
-        <!-- GRAPE FARMER -->
         <button class="upgrade" id="farmer">
-
-            <div class="upgrade-title">
-                👨‍🌾 Grape Farmer
-            </div>
-
-            <div>
-                +3 grapes per second
-            </div>
-
-            <div class="cost">
-                Cost: 150
-            </div>
-
+            <div class="upgrade-title">👨‍🌾 Grape Farmer</div>
+            <div>+3 grapes per second</div>
+            <div class="cost">Cost: 150</div>
         </button>
 
-
-        <!-- GRAPE FACTORY -->
         <button class="upgrade" id="factory">
-
-            <div class="upgrade-title">
-                🏭 Grape Factory
-            </div>
-
-            <div>
-                +50 grapes per second
-            </div>
-
-            <div class="cost">
-                Cost: 750
-            </div>
-
+            <div class="upgrade-title">🏭 Grape Factory</div>
+            <div>+50 grapes per second</div>
+            <div class="cost">Cost: 750</div>
         </button>
 
     </div>
@@ -214,83 +177,50 @@ h1 {
 
 </div>
 
-
 <script>
-
 let grapes = 0;
-
 let grapesPerSecond = 0;
 
-
-// Upgrade costs
 let vineCost = 25;
 let farmerCost = 150;
 let factoryCost = 750;
 
+const grapesDisplay = document.getElementById("grapes");
+const perSecondDisplay = document.getElementById("perSecond");
+const message = document.getElementById("message");
 
-// Get HTML elements
-const grapesDisplay =
-    document.getElementById("grapes");
+const grapeButton = document.getElementById("grapeButton");
 
-const perSecondDisplay =
-    document.getElementById("perSecond");
-
-const message =
-    document.getElementById("message");
-
-const grapeButton =
-    document.getElementById("grapeButton");
-
-const vineButton =
-    document.getElementById("vine");
-
-const farmerButton =
-    document.getElementById("farmer");
-
-const factoryButton =
-    document.getElementById("factory");
+const vineButton = document.getElementById("vine");
+const farmerButton = document.getElementById("farmer");
+const factoryButton = document.getElementById("factory");
 
 
-// Update everything on screen
 function updateDisplay() {
 
     grapesDisplay.textContent =
-        Math.floor(grapes).toLocaleString()
-        + " grapes";
+        Math.floor(grapes).toLocaleString() + " grapes";
 
     perSecondDisplay.textContent =
-        grapesPerSecond.toLocaleString()
-        + " grapes per second";
-
+        grapesPerSecond.toLocaleString() +
+        " grapes per second";
 
     vineButton.querySelector(".cost").textContent =
-        "Cost: "
-        + vineCost.toLocaleString();
-
+        "Cost: " + vineCost.toLocaleString();
 
     farmerButton.querySelector(".cost").textContent =
-        "Cost: "
-        + farmerCost.toLocaleString();
-
+        "Cost: " + farmerCost.toLocaleString();
 
     factoryButton.querySelector(".cost").textContent =
-        "Cost: "
-        + factoryCost.toLocaleString();
+        "Cost: " + factoryCost.toLocaleString();
 
-
-    // Disable buttons when you can't afford them
-    vineButton.disabled =
-        grapes < vineCost;
-
-    farmerButton.disabled =
-        grapes < farmerCost;
-
-    factoryButton.disabled =
-        grapes < factoryCost;
+    vineButton.disabled = grapes < vineCost;
+    farmerButton.disabled = grapes < farmerCost;
+    factoryButton.disabled = grapes < factoryCost;
 }
 
 
-// Click the grape
+// Click grape
 grapeButton.addEventListener("click", function() {
 
     grapes += 1;
@@ -300,9 +230,7 @@ grapeButton.addEventListener("click", function() {
     message.textContent = "+1 🍇";
 
     setTimeout(function() {
-
         message.textContent = "";
-
     }, 400);
 
 });
@@ -315,12 +243,10 @@ vineButton.addEventListener("click", function() {
 
         grapes -= vineCost;
 
-        // +1 grape per second
+        // Grape Vine = +1 per second
         grapesPerSecond += 1;
 
-        // Increase price
-        vineCost =
-            Math.floor(vineCost * 1.15);
+        vineCost = Math.floor(vineCost * 1.15);
 
         message.textContent =
             "You planted a grape vine! 🌱";
@@ -338,12 +264,10 @@ farmerButton.addEventListener("click", function() {
 
         grapes -= farmerCost;
 
-        // +3 grapes per second
+        // Grape Farmer = +3 per second
         grapesPerSecond += 3;
 
-        // Increase price
-        farmerCost =
-            Math.floor(farmerCost * 1.18);
+        farmerCost = Math.floor(farmerCost * 1.18);
 
         message.textContent =
             "A grape farmer joined you! 👨‍🌾";
@@ -361,12 +285,10 @@ factoryButton.addEventListener("click", function() {
 
         grapes -= factoryCost;
 
-        // +50 grapes per second
+        // Grape Factory = +50 per second
         grapesPerSecond += 50;
 
-        // Increase price
-        factoryCost =
-            Math.floor(factoryCost * 1.20);
+        factoryCost = Math.floor(factoryCost * 1.20);
 
         message.textContent =
             "Your grape factory is running! 🏭";
@@ -377,7 +299,7 @@ factoryButton.addEventListener("click", function() {
 });
 
 
-// Automatic grapes every second
+// Automatically produce grapes
 setInterval(function() {
 
     grapes += grapesPerSecond;
@@ -388,32 +310,25 @@ setInterval(function() {
 
 
 // Reset game
-document.getElementById("reset")
-.addEventListener("click", function() {
+document.getElementById("reset").addEventListener("click", function() {
 
     grapes = 0;
-
     grapesPerSecond = 0;
 
     vineCost = 25;
-
     farmerCost = 150;
-
     factoryCost = 750;
 
-    message.textContent =
-        "Game reset! 🍇";
+    message.textContent = "Game reset! 🍇";
 
     updateDisplay();
 
 });
 
 
-// Start the game
 updateDisplay();
 
 </script>
 
 </body>
 </html>
-```
